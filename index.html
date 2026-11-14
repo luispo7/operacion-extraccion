@@ -1,0 +1,144 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Operación Extracción – FPS 3D</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <div id="hud" class="hidden">
+    <div id="mission">
+      <div id="stage">ETAPA: <b id="stage-name">INICIO</b></div>
+      <div id="objective">Llega a la zona de extracción</div>
+      <div id="distance"></div>
+      <div id="kills">Zombis eliminados: <b id="kills-n">0</b> / <span id="kills-total">0</span></div>
+    </div>
+
+    <div id="crosshair">
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <span id="hitmarker"></span>
+    </div>
+
+    <div id="weapons">
+      <div class="wslot active" id="wslot-0">
+        <span class="key">1</span>
+        <span class="wname">PISTOLA</span>
+        <span class="wammo" id="ammo-0">12</span>
+      </div>
+
+      <div class="wslot" id="wslot-1">
+        <span class="key">2</span>
+        <span class="wname">CARABINA</span>
+        <span class="wammo" id="ammo-1">15</span>
+      </div>
+
+      <div id="ammo-big">
+        <b id="ammo-big-n">12</b>
+        <small>balas</small>
+      </div>
+    </div>
+
+    <div id="boost" class="hidden">⚡ ADRENALINA</div>
+    <div id="toasts"></div>
+    <div id="vignette"></div>
+    <div id="hints">1/2 arma · clic disparar · F linterna · M silencio</div>
+  </div>
+
+  <div id="loading" class="screen">
+    <h1>OPERACIÓN EXTRACCIÓN</h1>
+    <p id="loading-text">Cargando modelos 3D…</p>
+    <div class="bar">
+      <div id="loading-bar"></div>
+    </div>
+  </div>
+
+  <div id="menu" class="screen hidden">
+    <h1>OPERACIÓN EXTRACCIÓN</h1>
+    <h2>Sobrevive al apocalipsis</h2>
+
+    <table class="controls">
+      <tr>
+        <td><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></td>
+        <td>Moverse</td>
+        <td><kbd>Mouse</kbd></td>
+        <td>Mirar</td>
+      </tr>
+
+      <tr>
+        <td><kbd>Clic izq.</kbd></td>
+        <td>Disparar (1 disparo por clic)</td>
+        <td><kbd>1</kbd> <kbd>2</kbd></td>
+        <td>Cambiar de arma</td>
+      </tr>
+
+      <tr>
+        <td><kbd>F</kbd></td>
+        <td>Linterna</td>
+      </tr>
+    </table>
+
+    <button id="btn-play" class="btn">▶ JUGAR</button>
+
+    <p class="small">
+      El navegador capturará el mouse. Pulsa <kbd>Esc</kbd> para pausar.
+    </p>
+
+    <p class="small" id="diag"></p>
+  </div>
+
+  <div id="pause" class="screen hidden">
+    <h1>PAUSA</h1>
+    <p>Haz clic para continuar</p>
+  </div>
+
+  <div id="gameover" class="screen hidden danger">
+    <h1>GAME OVER</h1>
+    <p>Un zombi te ha atrapado.</p>
+    <p class="stats" id="go-stats"></p>
+    <button id="btn-retry" class="btn">↻ REINICIAR (R)</button>
+  </div>
+
+  <div id="victory" class="screen hidden win">
+    <h1>¡MISIÓN COMPLETADA!</h1>
+    <p>Has llegado a la zona de extracción.</p>
+    <p class="stats" id="win-stats"></p>
+    <button id="btn-again" class="btn">↻ JUGAR DE NUEVO (R)</button>
+  </div>
+
+  <div id="error" class="screen hidden danger">
+    <h1>No se pudo cargar el juego</h1>
+    <p id="error-text"></p>
+  </div>
+
+  <script>
+    if (location.protocol === 'file:') {
+      document.getElementById('loading-text').innerHTML =
+        'Abre el juego con un servidor local:<br><code>python3 -m http.server 8000</code> → <b>http://localhost:8000</b>';
+    }
+
+    setTimeout(function () {
+      if (!window.__gameStarted && location.protocol !== 'file:') {
+        document.getElementById('loading-text').textContent +=
+          ' (si tarda mucho, revisa tu conexión: Three.js se carga desde un CDN)';
+      }
+    }, 12000);
+  </script>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
